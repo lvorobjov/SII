@@ -1,0 +1,11 @@
+Для сборки проекта под Windows XP 32-bit необходимо установить инеструменты разработчика, исользуя следующие ссылки (см. табл.).
+
+[cols="<,<,1"]
+|===
+| № п/п | Наименование | Ссылка для скачивания
+| 1 | MinGW	| https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe/download
+| 2 | GIT     	| 
+| 3 | GNU make	| 	
+| 4 | CMake	| 
+| 5 | ResEdit	| 
+|===

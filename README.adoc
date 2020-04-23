@@ -1,11 +1,17 @@
-Для сборки проекта под Windows XP 32-bit необходимо установить инеструменты разработчика, исользуя следующие ссылки (см. табл.).
+= Сестема искусственного интеллекта
 
-[cols="<,<,1"]
-|===
-| № п/п | Наименование | Ссылка для скачивания
-| 1 | MinGW	| https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe/download
-| 2 | GIT     	| 
-| 3 | GNU make	| 	
-| 4 | CMake	| 
-| 5 | ResEdit	| 
-|===
+Экспертная система для улассификации дорожных знаков.
+
+== Содержание каталога
+
+Каталог содержит четыре лабораторных работы:
+
+. Составление таблицы характеристик дорожных знаков.
+. Реализация алгоритма C4.5 для построения дерева решений.
+. Реализация экспертной системы на языке Пролог.
+. Реализация обратного логического вывода на C++.
+
+== Инструкция по сборке
+
+Для сборки проекта под Windows XP 32-bit необходимо установить инеструменты разработчика: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe/download[MinGW^], https://github.com/git-for-windows/git/releases/download/v2.10.0.windows.1/Git-2.10.0-32-bit.exe[GIT for Windows], http://gnuwin32.sourceforge.net/downlinks/make.php[GNU Make^], https://cmake.org/files/v3.13/cmake-3.13.5-win32-x86.msi[CMake], http://rsdt.free.fr/ResEdit-win32.7z[ResEdit].
+

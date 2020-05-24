@@ -2,20 +2,16 @@
   "configurations": [
     {
       "name": "Debug",
-      "generator": "Unix Makefiles",
+      "generator": "MinGW Makefiles",
       "configurationType" : "Debug",
       "buildRoot":  "${projectDir}/build/${name}",
       "cmakeCommandArgs":  "",
       "buildCommandArgs": "",
-      "ctestCommandArgs":  "",
-      "variables": [{
-        "name": "TEST_VAR",
-        "value": "ON"
-        }]
+      "ctestCommandArgs":  ""
     },
     {
       "name": "Release",
-      "generator": "Unix Makefiles",
+      "generator": "MinGW Makefiles",
       "configurationType" : "Release",
       "buildRoot": "${projectDir}/build/${name}",
       "cmakeCommandArgs": "",

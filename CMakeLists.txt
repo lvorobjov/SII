@@ -10,6 +10,7 @@ option(UNICODE "Use UTF-16 strings" ON)
 if (UNICODE)
     add_definitions(-D_UNICODE -DUNICODE)
 endif()
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE  "-static -s -Wl,--gc-sections")
 
 add_subdirectory(Lab2/src)

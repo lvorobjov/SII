@@ -12,4 +12,4 @@ add_executable(${PROJECT_NAME} WIN32 ${SRCS}
     src/${PROJECT_NAME}.rc)
 target_link_libraries(${PROJECT_NAME} comctl32)
 
-add_tex(report report.ad 1.tex 2.tex 3.tex 4.tex 5.tex)
+add_tex(report report.adoc 1.tex 2.tex 3.tex 4.tex 5.tex)

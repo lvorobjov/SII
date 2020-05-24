@@ -1,0 +1,7 @@
+[main]
+.\report.tex
+
+[texfiles]
+.\1.tex
+.\trace.tex
+

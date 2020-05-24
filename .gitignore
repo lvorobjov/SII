@@ -1,0 +1,7 @@
+.idea
+build
+*-build*
+*.docx
+*.pdf
+*.rar
+*.html

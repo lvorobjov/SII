@@ -1,0 +1,6 @@
+[submodule "Lab2/src"]
+	path = Lab2/src
+	url = git@github.com:lvorobjov/SII-Lab2.git
+[submodule "Lab4/src"]
+	path = Lab4/src
+	url = git@github.com:lvorobjov/SII-Lab4.git

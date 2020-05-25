@@ -18,11 +18,19 @@
 #else
 #ifdef _UNICODE
 typedef wchar_t TCHAR;
+#define _tcslen wcslen
+#define _tcscmp wcscmp
+#define _T(str) L##str
 #else
 typedef char TCHAR;
+#define _tcslen strlen
+#define _tcscmp strcmp
+#define _T(str) str
 #endif
 typedef const TCHAR *LPCTSTR;
 typedef TCHAR *LPTSTR;
+typedef uint32_t DWORD;
+typedef U_char BYTE;
 #endif
 
 typedef struct _attribute_t {

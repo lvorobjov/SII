@@ -11,7 +11,10 @@
       "variables": [{
         "name": "CMAKE_BUILD_TYPE",
         "value": "Debug"
-        }]
+        }, {
+		"name": "VERBOSE",
+		"value": "ON"
+		}]
     },
     {
       "name": "Release",

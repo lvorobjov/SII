@@ -12,7 +12,17 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
+#ifdef _WIN32
 #include <windef.h>
+#else
+#ifdef _UNICODE
+typedef wchar_t TCHAR;
+#else
+typedef char TCHAR;
+#endif
+typedef const TCHAR *LPCTSTR;
+typedef TCHAR *LPTSTR;
+#endif
 
 typedef struct _attribute_t {
     LPTSTR lpszName;

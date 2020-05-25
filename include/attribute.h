@@ -21,11 +21,17 @@ typedef wchar_t TCHAR;
 #define _tcslen wcslen
 #define _tcscmp wcscmp
 #define _T(str) L##str
+#define _tcstok wcstok
+#define _tcstok_s wcstok_s
+#define _stscanf swscanf
 #else
 typedef char TCHAR;
 #define _tcslen strlen
 #define _tcscmp strcmp
 #define _T(str) str
+#define _tcstok strtok
+#define _tcstok_s strtok_s
+#define _stscanf sscanf
 #endif
 typedef const TCHAR *LPCTSTR;
 typedef TCHAR *LPTSTR;

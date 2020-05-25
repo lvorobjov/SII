@@ -14,6 +14,7 @@
 
 #ifdef _WIN32
 #include <windef.h>
+#include <tchar.h>
 #else
 #ifdef _UNICODE
 typedef wchar_t TCHAR;

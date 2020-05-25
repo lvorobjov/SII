@@ -24,6 +24,7 @@ typedef wchar_t TCHAR;
 #define _tcstok wcstok
 #define _tcstok_s wcstok_s
 #define _stscanf swscanf
+#define _tprintf wprintf
 #define _tcschr wcschr
 #define _tcstol wcstol
 #define _tcsdup wcsdup
@@ -35,6 +36,7 @@ typedef char TCHAR;
 #define _tcstok strtok
 #define _tcstok_s strtok_s
 #define _stscanf sscanf
+#define _tprintf printf
 #define _tcschr strchr
 #define _tcstol strtol
 #define _tcsdup strdup

@@ -17,6 +17,7 @@
 #include <tchar.h>
 #else
 #ifdef _UNICODE
+#include <wchar.h>
 typedef wchar_t TCHAR;
 #define _tcslen wcslen
 #define _tcscmp wcscmp

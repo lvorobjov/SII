@@ -12,8 +12,23 @@
 #ifndef FILEMAP_H
 #define FILEMAP_H
 
-#include <windows.h>
+#include <string>
+#include <boost/filesystem.hpp>
 
-LPTSTR ReadFileMultiByte(LPCTSTR lpszFilename);
+namespace sii {
+    using namespace std;
+    using boost::filesystem::path;
+
+    template <typename T>
+    wstring read_file_multi_byte(T &&filename);
+
+    wstring read_file_multi_byte(const path &p);
+
+    template <typename T>
+    wstring read_file_multi_byte(T &&filename) {
+        path p(filename);
+        return read_file_multi_byte(p);
+    }
+}
 
 #endif

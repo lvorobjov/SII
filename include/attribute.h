@@ -41,10 +41,11 @@ typedef char TCHAR;
 #define _tcstol strtol
 #define _tcsdup strdup
 #endif
+#include <cstdint>
 typedef const TCHAR *LPCTSTR;
 typedef TCHAR *LPTSTR;
 typedef uint32_t DWORD;
-typedef U_char BYTE;
+typedef uint8_t BYTE;
 #endif
 
 typedef struct _attribute_t {

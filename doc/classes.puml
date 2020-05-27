@@ -1,0 +1,12 @@
+@startuml
+
+class Parser {}
+
+class TableParser {}
+
+class RuleParser {}
+
+Parser <|-- TableParser
+Parser <|-- RuleParser
+
+@enduml

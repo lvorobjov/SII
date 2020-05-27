@@ -211,7 +211,7 @@ void Parser::load(LPTSTR lpszData) {
     int nAttrs;
     int nRules;
     LPTSTR saveptr;
-    lpszLine = _tcstok(lpszData, _T("\r\n", &saveptr));
+    lpszLine = _tcstok(lpszData, _T("\r\n"), &saveptr);
     _stscanf(lpszLine, _T("%d %d"), &nAttrs, &nRules);
     init(nAttrs);
     for (int i=0; i<nAttrs; i++) {

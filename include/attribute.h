@@ -15,6 +15,8 @@
 #ifdef _WIN32
 #include <windef.h>
 #include <tchar.h>
+#define wcstok wcstok_s
+#define strtok strtok_s
 #else
 #ifdef _UNICODE
 #include <wchar.h>
@@ -23,7 +25,6 @@ typedef wchar_t TCHAR;
 #define _tcscmp wcscmp
 #define _T(str) L##str
 #define _tcstok wcstok
-#define _tcstok_s wcstok_s
 #define _stscanf swscanf
 #define _tprintf wprintf
 #define _tcschr wcschr
@@ -35,7 +36,6 @@ typedef char TCHAR;
 #define _tcscmp strcmp
 #define _T(str) str
 #define _tcstok strtok
-#define _tcstok_s strtok_s
 #define _stscanf sscanf
 #define _tprintf printf
 #define _tcschr strchr

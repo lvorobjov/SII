@@ -25,5 +25,6 @@ endif()
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE  "-static -s -Wl,--gc-sections")
 
+add_subdirectory(lib)
 add_subdirectory(Lab2/src)
 add_subdirectory(Lab4/src)

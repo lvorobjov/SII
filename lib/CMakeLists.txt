@@ -1,0 +1,5 @@
+set(LIBRARY_NAME logic)
+add_library(filemap OBJECT filemap.cpp ../include/filemap.h)
+target_link_libraries(filemap ${Boost_LIBRARIES})
+add_library(parser OBJECT ../include/parser.h parser.cpp)
+add_library(${LIBRARY_NAME} OBJECT ../include/attribute.h attribute.cpp logic.cpp utils.cpp ../include/logic.h ../include/utils.h)

@@ -29,5 +29,6 @@ set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "-static")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -masm=intel")
 
 add_subdirectory(lib)
+add_subdirectory(src)
 add_subdirectory(Lab2/src)
 add_subdirectory(Lab4/src)

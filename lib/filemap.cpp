@@ -10,23 +10,17 @@
  */
 
 #include "filemap.h"
-#include <boost/iostreams/code_converter.hpp>
 #include <boost/iostreams/device/mapped_file.hpp>
-#include <codecvt>
-#include <sstream>
 using namespace std;
 using boost::filesystem::path;
 using boost::iostreams::mapped_file_source;
-using boost::iostreams::code_converter;
-using wmapped_file_source = code_converter<mapped_file_source, codecvt_utf8_utf16<wchar_t>>;
 
 wstring sii::read_file_multi_byte(const path &p) {
     mapped_file_source source(p);
-    wmapped_file_source wsource(source);
-    wstringstream out;
-    int const size = 512;
-    wchar_t buf[size];
-    while (int count = wsource.read(buf, size))
-        out << wstring(buf, buf+count);
-    return out.str();
+    auto *src = source.data();
+    mbstate_t state = mbstate_t();
+    size_t size = 1 + mbsrtowcs(nullptr, &src, 0, &state);
+    vector<wchar_t> buf(size, 0);
+    mbsrtowcs(buf.data(), &src, buf.size(), &state);
+    return wstring(buf.begin(), buf.end());
 }

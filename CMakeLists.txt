@@ -25,6 +25,7 @@ endif()
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O -msse3")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE  "-static -s -Wl,--gc-sections")
+set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "-static")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -masm=intel")
 
 add_subdirectory(lib)

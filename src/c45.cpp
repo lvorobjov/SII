@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 #endif // _VERBOSE
+    setlocale(LC_ALL, "ru_RU.utf8");
     wstring fileData = read_file_multi_byte(argv[1]);
 	table_t *table;
     if (!(table = LoadTable(fileData.c_str()))) {

@@ -14,12 +14,11 @@
 #include <boost/iostreams/device/mapped_file.hpp>
 #include <codecvt>
 #include <sstream>
-using namespace sii;
 using boost::iostreams::mapped_file_source;
 using boost::iostreams::code_converter;
-using wmapped_file_source = code_converter<mapped_file_source, codecvt_utf8_utf16<wchar_t>>;
+using wmapped_file_source = code_converter<mapped_file_source, std::codecvt_utf8_utf16<wchar_t>>;
 
-wstring read_file_multi_byte(const path &p) {
+std::wstring sii::read_file_multi_byte(const boost::filesystem::path &p) {
     mapped_file_source source(p);
     wmapped_file_source wsource(source);
     wstringstream out;

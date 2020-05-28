@@ -62,7 +62,7 @@ void table_free(table_t* t) {
 }
 
 tree_node_t* node_decision_init(tree_node_t* n, column_t* col) {
-	n->dwType = TREE_NODE_TYPE_DECIDION;
+    n->dwType = tree_node_type::DECISION;
 	n->col = col;
 	n->nodes = (tree_node_t*)malloc(col->nCases * sizeof(tree_node_t));
     memset(n->nodes, 0, col->nCases * sizeof(tree_node_t));
@@ -70,14 +70,14 @@ tree_node_t* node_decision_init(tree_node_t* n, column_t* col) {
 }
 
 tree_node_t* node_solve_init(tree_node_t* n, column_t* col, DWORD dwClass) {
-	n->dwType = TREE_NODE_TYPE_SOLVE;
+    n->dwType = tree_node_type::SOLVE;
 	n->col = col;
 	n->dwClass = dwClass;
     return n;
 }
 
 static void node_free(tree_node_t* n) {
-	if (n->dwType == TREE_NODE_TYPE_DECIDION) {
+    if (n->dwType == tree_node_type::DECISION) {
 		for (int i=0; i < n->col->nCases; i++) {
 			node_free(&n->nodes[i]);
 		}
@@ -289,7 +289,7 @@ void rule_list_free(rule_list_t* list) {
 rule_list_t* tree_to_rules(tree_node_t* n) {
 	static int nested = 0;
 	rule_list_t* list = NULL;
-	if (n->dwType == TREE_NODE_TYPE_DECIDION) {
+    if (n->dwType == tree_node_type::DECISION) {
 		nested++;
 		rule_list_t* pList = list;
 		rule_list_t* othList;
@@ -306,7 +306,7 @@ rule_list_t* tree_to_rules(tree_node_t* n) {
 			}
 		}
 		nested--;
-	} else if (n->dwType == TREE_NODE_TYPE_SOLVE) {
+    } else if (n->dwType == tree_node_type::SOLVE) {
 		rule_t* rule = rule_new(nested);
 		rule->conclusion.col = n->col;
 		rule->conclusion.dwValue = n->dwClass;

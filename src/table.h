@@ -25,8 +25,10 @@ typedef struct _table_t {
 table_t* table_new(int nRows, int nCols);
 void table_free(table_t* t);
 
-#define TREE_NODE_TYPE_DECIDION 1
-#define TREE_NODE_TYPE_SOLVE 	2
+typedef enum {
+    DECISION = 1,
+    SOLVE = 2
+} tree_node_type;
 
 typedef struct _tree_node_t {
 	DWORD dwType;

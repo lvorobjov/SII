@@ -21,14 +21,15 @@ protected:
     virtual attribute_t* getAttributeByName(LPCTSTR lpszName) const = 0;
     virtual void addRule(rule_t* rule) = 0;
 
+public:
+    static void parseAttributeRecord(LPTSTR lpszRecord, attribute_t* attr);
+    static LPTSTR parseAttributeHead(LPTSTR lpszHead, int nFields, ...);
+    static LPTSTR parseAttributeBody(LPCTSTR lpszBody, int* nCases);
 #ifdef _TEST_MODULE
   protected:
 #else
   private:
 #endif
-    static void parseAttributeRecord(LPTSTR lpszRecord, attribute_t* attr);
-    static LPTSTR parseAttributeHead(LPTSTR lpszHead, int nFields, ...);
-    static LPTSTR parseAttributeBody(LPCTSTR lpszBody, int* nCases);
     rule_t* parseRuleRecord(LPTSTR lpszRecord);
     int countAttributes(LPCTSTR lpszRecord);
     void parseStatement(LPTSTR lpszStmt, statement_t* stmt);

@@ -36,9 +36,9 @@ void print_table(table_t* t, int i0, int n, int xCol) {
 }
 
 static int count_solves(tree_node_t* n) {
-    if (n->dwType == TREE_NODE_TYPE_SOLVE) {
+    if (n->dwType == tree_node_type::SOLVE) {
         return 1;
-    } else if (n->dwType == TREE_NODE_TYPE_DECIDION) {
+    } else if (n->dwType == tree_node_type::DECISION) {
         int count = 0;
         for (int i=0; i<n->col->nCases; i++) {
             count += count_solves(&n->nodes[i]);
@@ -87,10 +87,10 @@ static tree_context_t* stack_pop() {
 }
 
 static void print_recursive_tree(tree_node_t* n) {
-    if (n->dwType == TREE_NODE_TYPE_SOLVE) {
+    if (n->dwType == tree_node_type::SOLVE) {
         _tprintf(_T("{\\hspace{0pt}%.12ls...} "),
             attribute_get_case(n->col, n->dwClass));
-    } else if (n->dwType == TREE_NODE_TYPE_DECIDION) {
+    } else if (n->dwType == tree_node_type::DECISION) {
         _tprintf(_T("[.{%ls} "), n->col->lpszTitle);
         for (int i=0; i<n->col->nCases; i++) {
             if (n->nodes[i].dwType != 0) {

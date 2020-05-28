@@ -3,7 +3,7 @@ project(SII)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 include(CsoiWin)
 
-FIND_PACKAGE( Boost COMPONENTS iostreams REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS iostreams system REQUIRED )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 set(CMAKE_CXX_STANDARD 11)

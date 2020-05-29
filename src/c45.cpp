@@ -7,7 +7,6 @@
 #include <fcntl.h>
 #endif
 
-#include "parser.h"
 #include "table.h"
 #include "filemap.h"
 
@@ -33,7 +32,7 @@ int main(int argc, char *argv[]) {
     setlocale(LC_ALL, "ru_RU.utf8");
     wstring fileData = read_file_multi_byte(argv[1]);
 	table_t *table;
-    if (!(table = LoadTable(fileData.c_str()))) {
+    if (!(table = table_load(fileData.c_str()))) {
 		fprintf(stderr, "%s not exists", argv[1]);
 		return EXIT_FAILURE;
     }
@@ -44,7 +43,7 @@ int main(int argc, char *argv[]) {
 	_setmode(STDOUT_FILENO, _O_U8TEXT);
 #endif // _WIN32
 #endif // _VERBOSE
-	rule_list_t* rule_list = table_to_rules(table);
+    list_t* rule_list = table_to_rules(table);
 #ifdef _VERBOSE
 	dup2(stdout_copy, STDOUT_FILENO);
 	close(stdout_copy);
@@ -52,6 +51,6 @@ int main(int argc, char *argv[]) {
 #endif
 	print_rules_db(table, rule_list);
 	rule_list_free(rule_list);
-    FreeTable(table);
+    table_free(table);
 	return EXIT_SUCCESS;
 }

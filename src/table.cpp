@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "trace.h"
+#include "parser.h"
 
 static double table_entropy(table_t* t, int i0, int n);
 static double table_entropy_separate(table_t* t, int i0, int n, int xCol);
@@ -56,6 +57,17 @@ table_t* table_new(int nRows, int nCols) {
 }
 
 void table_free(table_t* t) {
+    if (t == NULL)
+        return;
+    for (int i=0; i < t->nCols; i++) {
+        free(t->cols[i].lpszName);
+        free(t->cols[i].lpszTitle);
+        free(t->cols[i].lpszQuery);
+        free(t->cols[i].lpszCases);
+    }
+    for (int i=0; i < t->nRows; i++) {
+        free(t->rows[i].lpszTitle);
+    }
 	free(t->rows);
 	free(t->cols);
 	free(t);
@@ -253,54 +265,21 @@ tree_node_t* table_to_tree(table_t* t) {
 	return n;
 }
 
-rule_list_t* rule_list_add(rule_list_t* list, rule_t* rule) {
-	if (list == NULL) {
-		list = (rule_list_t*)malloc(sizeof(rule_list_t));
-		list -> rule = rule;
-		list -> next = NULL;
-	} else {
-		while (list->next != NULL)
-			list = list -> next;
-		list -> next = rule_list_add(NULL, rule);
-	}
-	return list;
-}
-
-rule_list_t* rule_list_append(rule_list_t* list, rule_list_t* othList) {
-	if (list == NULL) {
-		list = othList;
-	} else {
-		while (list->next != NULL)
-			list = list -> next;
-		list -> next = othList;
-	}
-	return list;
-}
-
-void rule_list_free(rule_list_t* list) {
-  if (! list)
-    return;
-	if (list -> next != NULL)
-		rule_list_free(list -> next);
-  rule_free(list -> rule);
-	free (list);
-}
-
-rule_list_t* tree_to_rules(tree_node_t* n) {
+list_t* tree_to_rules(tree_node_t* n) {
 	static int nested = 0;
-	rule_list_t* list = NULL;
+	list_t* list = NULL;
     if (n->dwType == tree_node_type::DECISION) {
 		nested++;
-		rule_list_t* pList = list;
-		rule_list_t* othList;
+		list_t* pList = list;
+		list_t* othList;
 		for (int i=0; i < n->col->nCases; i++) {
-			pList = rule_list_append(pList,
+            pList = list_append(pList,
 				othList = tree_to_rules(&n->nodes[i]));
 			if (list == NULL)
 				list = pList;
 			while (othList != NULL) {
-				statement_t* stmt = &othList -> rule -> premises[nested-1];
-				stmt->col = n->col;
+                statement_t* stmt = &(reinterpret_cast<rule_t*>(othList -> data) -> premises[nested-1]);
+                stmt->attr = n->col;
 				stmt->dwValue = i;
 				othList = othList -> next;
 			}
@@ -308,23 +287,23 @@ rule_list_t* tree_to_rules(tree_node_t* n) {
 		nested--;
     } else if (n->dwType == tree_node_type::SOLVE) {
 		rule_t* rule = rule_new(nested);
-		rule->conclusion.col = n->col;
+        rule->conclusion.attr = n->col;
 		rule->conclusion.dwValue = n->dwClass;
-		list = rule_list_add(NULL, rule);
+        list_add(list, rule);
 	}
 	return list;
 }
 
-rule_list_t* table_to_rules(table_t* t) {
+list_t* table_to_rules(table_t* t) {
     tree_node_t* root_node = table_to_tree(t);
-    rule_list_t* rule_list = tree_to_rules(root_node);
+    list_t* rule_list = tree_to_rules(root_node);
     TRACE_RULES(rule_list);
     tree_free(root_node);
     return rule_list;
 }
 
 static
-int count_rules(rule_list_t* rules) {
+int count_rules(list_t* rules) {
     if (! rules)
         return 0;
     if (rules -> next == NULL) {
@@ -334,7 +313,7 @@ int count_rules(rule_list_t* rules) {
     }
 }
 
-void print_rules_db(table_t* t, rule_list_t* r) {
+void print_rules_db(table_t* t, list_t* r) {
     int nAttrs = t->nCols;
     int nRules = count_rules(r);
     int nCases;
@@ -357,16 +336,46 @@ void print_rules_db(table_t* t, rule_list_t* r) {
 
     rule_t* rule;
     for (int i=0; i<nRules && r != NULL; i++) {
-        rule = r->rule;
+        rule = reinterpret_cast<rule_t*>(r->data);
         _tprintf(_T("%ls=%d:"),
-            rule->conclusion.col->lpszName,
+            rule->conclusion.attr->lpszName,
             rule->conclusion.dwValue);
         for (int j=0; j<rule->nPremises; j++) {
             _tprintf(_T("%ls=%d%ls"),
-                rule->premises[j].col->lpszName,
+                rule->premises[j].attr->lpszName,
                 rule->premises[j].dwValue,
                 (j < rule->nPremises-1)? _T(";") : _T(".\n"));
         }
         r=r->next;
     }
+}
+
+table_t *table_load(LPCTSTR lpszFileData) {
+    LPTSTR lpszFileDup = _tcsdup(lpszFileData);
+    LPTSTR lpszLine;
+    int nCols;
+    int nRows;
+    LPTSTR lineptr;
+    lpszLine = _tcstok(lpszFileDup, _T("\r\n"), &lineptr);
+    _stscanf(lpszLine, _T("%d %d"), &nCols, &nRows);
+    table_t* t = table_new(nRows, nCols);
+    for (int i=0; i<nCols; i++) {
+        lpszLine = _tcstok(NULL, _T("\r\n"), &lineptr);
+        Parser::parseAttributeRecord(lpszLine, &t->cols[i]);
+    }
+    LPTSTR ptr;
+    LPTSTR saveptr;
+    for (int i=0; i<nRows; i++) {
+        lpszLine = _tcstok(NULL, _T("\r\n"), &lineptr);
+        ptr = _tcschr(lpszLine, (int)_T('\t'));
+        *ptr++ = _T('\0');
+        t->rows[i].lpszTitle = _tcsdup(lpszLine);
+        t->rows[i].dwClass = _tcstol(ptr, &saveptr, 10);
+        for (int j=0; j<nCols-1; j++) {
+            ptr = ++saveptr;
+            t->rows[i].bAttrs[j] = _tcstol(ptr, &saveptr, 10);
+        }
+    }
+    free(lpszFileDup);
+    return t;
 }

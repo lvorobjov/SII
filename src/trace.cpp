@@ -62,29 +62,7 @@ static tree_context_t* tree_context_new(
     return tree;
 }
 
-typedef struct _stack_t {
-    tree_context_t* data;
-    struct _stack_t* next;
-} stack_t;
 static stack_t *stack = NULL;
-
-static void stack_push(tree_context_t* data) {
-    stack_t* s;
-    s = (stack_t*)malloc(sizeof(stack_t));
-    s -> next = stack;
-    s -> data = data;
-    stack = s;
-}
-
-static tree_context_t* stack_pop() {
-    if (stack == NULL)
-        return NULL;
-    tree_context_t* data = stack -> data;
-    stack_t* s = stack -> next;
-    free(stack);
-    stack = s;
-    return data;
-}
 
 static void print_recursive_tree(tree_node_t* n) {
     if (n->dwType == tree_node_type::SOLVE) {
@@ -100,7 +78,7 @@ static void print_recursive_tree(tree_node_t* n) {
                     print_recursive_tree(&n->nodes[i]);
                 } else {
                     _tprintf(_T("{см. далее} "));
-                    stack_push(tree_context_new(
+                    stack_push(stack, tree_context_new(
                         attribute_get_case(n->col, i),
                         &n->nodes[i]
                     ));
@@ -112,11 +90,11 @@ static void print_recursive_tree(tree_node_t* n) {
 }
 
 void print_tree(tree_node_t* n) {
-    stack_push(tree_context_new(_T("Группа знака?"), n));
+    stack_push(stack, tree_context_new(_T("Группа знака?"), n));
     tree_context_t* tree;
     int i = 1;
     while (stack != NULL) {
-        tree = stack_pop();
+        tree = reinterpret_cast<tree_context_t*>(stack_pop(stack));
         _tprintf(_T("%% require tikz-qtree\n"
             "\\begin{figure}[H]\n"
             "\t\\sffamily\n"
@@ -136,25 +114,25 @@ void print_tree(tree_node_t* n) {
     }
 }
 
-void print_rules(rule_list_t* r) {
+void print_rules(list_t* r) {
     _tprintf(_T("\n\\section{Продукционные правила}\n"
 		"\n\\begin{enumerate}[itemindent=0pt]\n"));
     rule_t *rule;
     statement_t *stmt;
     while (r != NULL) {
-        rule = r->rule;
+        rule = reinterpret_cast<rule_t*>(r->data);
         _tprintf(_T("\t\\item \\begin{tabbing}\n"
             "\t\\hspace{4em}\\=\\kill\n"));
         for (int i=0; i<rule->nPremises; i++) {
             stmt = &rule -> premises[i];
             _tprintf(_T("\t\\bf %ls \\> \\tabfill{%ls = %ls} \\\\\n"),
                 (i == 0) ? _T("ЕСЛИ") : _T("И"),
-                stmt->col->lpszTitle,
-                attribute_get_case(stmt->col, stmt->dwValue));
+                stmt->attr->lpszTitle,
+                attribute_get_case(stmt->attr, stmt->dwValue));
         }
         _tprintf(_T("\t\\bf %ls \\> \\tabfill{%ls = %ls}\n"),
-            _T("ТО"), rule->conclusion.col->lpszTitle,
-            attribute_get_case(rule->conclusion.col, rule->conclusion.dwValue));
+            _T("ТО"), rule->conclusion.attr->lpszTitle,
+            attribute_get_case(rule->conclusion.attr, rule->conclusion.dwValue));
         _tprintf(_T("\t\\end{tabbing}\n"));
         r = r -> next;
     }
@@ -177,19 +155,19 @@ void print_gains(double *gains, int nAttrs, int xCol) {
     _tprintf(_T("\n\\end{array}\n $$\n"));
 }
 
-void print_rules_prolog(rule_list_t* r) {
+void print_rules_prolog(list_t* r) {
     _tprintf(_T("\n\\begin{minted}{prolog}\n"));
     rule_t *rule;
     statement_t *stmt;
     while (r != NULL) {
-        rule = r->rule;
+        rule = reinterpret_cast<rule_t*>(r->data);
         _tprintf(_T("\troadsign(\"%ls\") :-"),
-            attribute_get_case(rule->conclusion.col, rule->conclusion.dwValue));
+            attribute_get_case(rule->conclusion.attr, rule->conclusion.dwValue));
         for (int i=0; i<rule->nPremises; i++) {
             stmt = &rule -> premises[i];
             _tprintf(_T("\n\t\tpriznak(\"%ls = %ls\"),"),
-                stmt->col->lpszTitle,
-                attribute_get_case(stmt->col, stmt->dwValue));
+                stmt->attr->lpszTitle,
+                attribute_get_case(stmt->attr, stmt->dwValue));
         }
         _tprintf(_T("!.\n"));
         r = r -> next;

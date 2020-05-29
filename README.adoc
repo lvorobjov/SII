@@ -14,3 +14,16 @@
 == Инструкция по сборке
 
 Для сборки проекта под Windows XP 32-bit необходимо установить инструменты разработчика: https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/installer/mingw-w64-install.exe/download[MinGW^], https://github.com/git-for-windows/git/releases/download/v2.10.0.windows.1/Git-2.10.0-32-bit.exe[GIT for Windows], http://gnuwin32.sourceforge.net/downlinks/make.php[GNU Make^], https://cmake.org/files/v3.13/cmake-3.13.5-win32-x86.msi[CMake], http://rsdt.free.fr/ResEdit-win32.7z[ResEdit].
+
+Проект зависит от слудующих библиотек:
+
+- Boost.Iostreams 1.65.1
+- Boost.System 1.65.1
+- WinLamb
+
+Для установки Boost под Windows необходимо скачать архив с исходным кодом, распаковать его и запустить компиляцию, слудуя https://gist.github.com/zrsmithson/0b72e0cb58d0cb946fc48b5c88511da8[инструкции для MinGW].
+
+Для установки Boost под Linux нужна всего лишь одна команда
+```
+sudo apt install libboost-all-dev
+```

@@ -14,6 +14,63 @@
 #include <stdarg.h>
 #include <string.h>
 
+#include <functional>
+using std::ref;
+
+struct pass {
+    template <typename ... Ts>
+    explicit pass(Ts...) { }
+};
+
+static wstring attribute_parse_field(const wstring &head, size_t &index) {
+    auto pos = head.find(_T(":"), index);
+    if (pos == wstring::npos)
+        throw std::out_of_range(":");
+    wstring res = head.substr(index,pos);
+    index = pos + 1;
+    return res;
+}
+
+template <typename ... Args>
+size_t attribute_parse_head(const wstring &head, Args &... args) {
+    size_t index = 0;
+    try {
+        pass{(args = attribute_parse_field(head, index), 1)...};
+    } catch (std::out_of_range const&) {}
+    return index;
+}
+
+static LPTSTR attribute_parse_body(const wstring &body, size_t pos, int* nCases) {
+    // Разбор списка значений
+    size_t len = body.length() - pos;
+    LPCTSTR ptr = body.c_str() + pos;
+    LPTSTR dst = (LPTSTR)calloc(len+2, sizeof(TCHAR));
+    int count = 0;
+    size_t index = 0;
+    while (ptr) {
+        ptr += _tcsspn(ptr, _T(" \t"));
+        if (! *ptr)
+            break;
+        len = _tcscspn(ptr, _T(";."));
+        _tcsncpy(dst+index, ptr, len);
+        ptr += len;
+        index += len + 1;
+        count ++;
+    }
+    *nCases = count;
+    return dst;
+}
+
+void attribute_parse(const wstring &record, attribute_t* attr) {
+    // Заполнение первых трех полей
+    auto pos = attribute_parse_head(record,
+        attr->name, attr->title, attr->query);
+
+    // Разбор списка значений
+    attr->lpszCases = attribute_parse_body(record, pos, &attr->nCases);
+}
+
+
 int attribute_set_cases(attribute_t* attr, ...) {
     va_list args{};
     va_start(args, attr);

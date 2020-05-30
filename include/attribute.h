@@ -70,6 +70,7 @@ typedef struct _attribute_t {
 	LPTSTR lpszCases;
 } attribute_t;
 
+void attribute_parse(const wstring &record, attribute_t* attr);
 int attribute_set_cases(attribute_t* attr, ...);
 LPTSTR attribute_get_case(attribute_t* attr, int nCase);
 LPTSTR attribute_first_case(attribute_t* attr);

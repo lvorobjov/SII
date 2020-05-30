@@ -63,9 +63,6 @@ void table_free(table_t* t) {
     if (t == NULL)
         return;
     for (int i=0; i < t->nCols; i++) {
-        free(t->cols[i].name.c_str());
-        free(t->cols[i].title.c_str());
-        free(t->cols[i].query.c_str());
         free(t->cols[i].lpszCases);
     }
 	free(t->rows);
@@ -360,9 +357,7 @@ table_t *table_load(const wstring &fileData) {
     table_t* t = table_new(nRows, nCols);
     for (int i=0; i<nCols; i++) {
         getline(ss, line);
-        LPTSTR lineDup = _tcsdup(line.c_str());
-        Parser::parseAttributeRecord(lineDup, &t->cols[i]);
-        free(lineDup);
+        attribute_parse(line, &t->cols[i]);
     }
     LPTSTR saveptr;
     for (int i=0; i<nRows; i++) {

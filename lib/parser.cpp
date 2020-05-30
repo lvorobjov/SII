@@ -17,59 +17,6 @@
 
 #include <asmdef.h>
 
-#include <functional>
-using std::ref;
-
-size_t Parser::parseAttributeHead(const wstring &head, int nFields, ...) {
-    va_list args{};
-    va_start(args, nFields);
-    size_t index = 0;
-
-    for (int i=0; i<nFields; i++) {
-        auto pos = head.find(_T(":"), index);
-        if (pos == wstring::npos)
-            break;
-        auto &field = va_arg(args, wstring&);
-        field = head.substr(index,pos);
-        index = pos + 1;
-    }
-
-    va_end(args);
-    return index;
-}
-
-LPTSTR Parser::parseAttributeBody(const wstring &body, size_t pos, int* nCases) {
-    // Разбор списка значений
-    size_t len = body.length() - pos;
-    LPCTSTR ptr = body.c_str() + pos;
-    LPTSTR dst = (LPTSTR)calloc(len+2, sizeof(TCHAR));
-    int count = 0;
-    size_t index = 0;
-    while (ptr) {
-        ptr += _tcsspn(ptr, _T(" \t"));
-        if (! *ptr)
-            break;
-        len = _tcscspn(ptr, _T(";."));
-        _tcsncpy(dst+index, ptr, len);
-        ptr += len;
-        index += len + 1;
-        count ++;
-    }
-    *nCases = count;
-    return dst;
-}
-
-void Parser::parseAttributeRecord(const wstring &record, attribute_t* attr) {
-    LPTSTR ptr;
-
-    // Заполнение первых трех полей
-    auto pos = parseAttributeHead(record, 3,
-        ref(attr->name), ref(attr->title), ref(attr->query));
-
-    // Разбор списка значений
-    attr->lpszCases = parseAttributeBody(record, pos, &attr->nCases);
-}
-
 #define PARSE_STATEMENT \
     ".intel_syntax noprefix\n\t" \
     "cld\n\t"	\
@@ -171,7 +118,7 @@ void Parser::load(LPTSTR lpszData) {
     init(nAttrs);
     for (int i=0; i<nAttrs; i++) {
         lpszLine = _tcstok(NULL, _T("\r\n"), &saveptr);
-        parseAttributeRecord(lpszLine, getAttribute(i));
+        attribute_parse(lpszLine, getAttribute(i));
     }
     for (int i=0; i<nRules; i++) {
         lpszLine = _tcstok(NULL, _T("\r\n"), &saveptr);

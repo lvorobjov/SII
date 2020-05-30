@@ -360,13 +360,13 @@ table_t *table_load(LPCTSTR lpszFileData) {
     _stscanf(lpszLine, _T("%d %d"), &nCols, &nRows);
     table_t* t = table_new(nRows, nCols);
     for (int i=0; i<nCols; i++) {
-        lpszLine = _tcstok(NULL, _T("\r\n"), &lineptr);
+        lpszLine = _tcstok(lpszFileDup, _T("\r\n"), &lineptr);
         Parser::parseAttributeRecord(lpszLine, &t->cols[i]);
     }
     LPTSTR ptr;
     LPTSTR saveptr;
     for (int i=0; i<nRows; i++) {
-        lpszLine = _tcstok(NULL, _T("\r\n"), &lineptr);
+        lpszLine = _tcstok(lpszFileDup, _T("\r\n"), &lineptr);
         ptr = _tcschr(lpszLine, (int)_T('\t'));
         *ptr++ = _T('\0');
         t->rows[i].lpszTitle = _tcsdup(lpszLine);

@@ -355,8 +355,8 @@ table_t *table_load(const wstring &fileData) {
     wstring line;
     int nCols;
     int nRows;
+    ss >> nCols >> nRows;
     getline(ss, line);
-    _stscanf(line.c_str(), _T("%d %d"), &nCols, &nRows);
     table_t* t = table_new(nRows, nCols);
     for (int i=0; i<nCols; i++) {
         getline(ss, line);

@@ -30,11 +30,11 @@ public:
 	}
 
 	void setUp() {
-		attrs[0].lpszName = _tcsdup(_T("A"));
-		attrs[1].lpszName = _tcsdup(_T("B"));
-		attrs[2].lpszName = _tcsdup(_T("C"));
-		attrs[1].lpszQuery = _tcsdup(_T("B?"));
-		attrs[2].lpszQuery = _tcsdup(_T("C?"));
+		attrs[0].name.c_str() = _tcsdup(_T("A"));
+		attrs[1].name.c_str() = _tcsdup(_T("B"));
+		attrs[2].name.c_str() = _tcsdup(_T("C"));
+		attrs[1].query.c_str() = _tcsdup(_T("B?"));
+		attrs[2].query.c_str() = _tcsdup(_T("C?"));
 		for (int i=0; i<nAttrs; i++) {
 			attrs[i].lpszCases = (LPTSTR)calloc(CASES_LEN, sizeof(TCHAR));
 			attribute_set_cases(&attrs[i], _T("No"), _T("Yes"), _T("Ignore"), NULL);
@@ -55,11 +55,11 @@ public:
 
 	void tearDown() {
 		for(int i=0; i<nAttrs; i++) {
-			free(attrs[i].lpszName);
+			free(attrs[i].name.c_str());
 			free(attrs[i].lpszCases);
 		}
-		free(attrs[1].lpszQuery);
-		free(attrs[2].lpszQuery);
+		free(attrs[1].query.c_str());
+		free(attrs[2].query.c_str());
 		while (goals != NULL) {
 			goal_free((goal_t*)stack_pop(goals));
 		}

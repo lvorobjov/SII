@@ -211,7 +211,7 @@ prove_result_t prove(list_t* &rules, stack_t* &goals, list_t* &facts) {
                 rule = rule_list_find(NULL, attr);
             } while (rule != NULL);
         } else {
-            if (attr -> lpszQuery != NULL) {
+            if (attr -> query.c_str() != NULL) {
                 // Запросить у пользователя ответ на текущую цель
                 return PROVE_QUERY;
             } else {

@@ -18,18 +18,18 @@ class Parser {
 protected:
     virtual int getAttributeCount() const = 0;
     virtual attribute_t* getAttribute(int index) const = 0;
-    virtual attribute_t* getAttributeByName(LPCTSTR lpszName) const = 0;
+    virtual attribute_t* getAttributeByName(const wstring &name) const = 0;
     virtual void addRule(rule_t* rule) = 0;
 
 public:
-    static void parseAttributeRecord(LPTSTR lpszRecord, attribute_t* attr);
+    static void parseAttributeRecord(const wstring &record, attribute_t* attr);
 #ifdef _TEST_MODULE
   protected:
 #else
   private:
 #endif
-    static LPTSTR parseAttributeHead(LPTSTR lpszHead, int nFields, ...);
-    static LPTSTR parseAttributeBody(LPCTSTR lpszBody, int* nCases);
+    static size_t parseAttributeHead(const wstring &head, int nFields, ...);
+    static LPTSTR parseAttributeBody(const wstring &body, size_t pos, int* nCases);
     rule_t* parseRuleRecord(LPTSTR lpszRecord);
     int countAttributes(LPCTSTR lpszRecord);
     void parseStatement(LPTSTR lpszStmt, statement_t* stmt);

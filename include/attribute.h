@@ -63,9 +63,9 @@ typedef uint8_t BYTE;
 #endif
 
 typedef struct _attribute_t {
-    LPTSTR lpszName;
-    LPTSTR lpszTitle;
-    LPTSTR lpszQuery;
+    wstring name;
+    wstring title;
+    wstring query;
 	int nCases;
 	LPTSTR lpszCases;
 } attribute_t;

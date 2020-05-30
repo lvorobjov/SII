@@ -17,29 +17,31 @@
 
 #include <asmdef.h>
 
-LPTSTR Parser::parseAttributeHead(LPTSTR lpszHead, int nFields, ...) {
+#include <functional>
+using std::ref;
+
+size_t Parser::parseAttributeHead(const wstring &head, int nFields, ...) {
     va_list args{};
     va_start(args, nFields);
-    LPTSTR ptr = lpszHead;
-    LPTSTR saveptr = NULL;
-    LPTSTR* lppField;
+    size_t index = 0;
 
     for (int i=0; i<nFields; i++) {
-        ptr = _tcstok(lpszHead, _T(":"), &saveptr);
-        if (! ptr)
+        auto pos = head.find(_T(":"), index);
+        if (pos == wstring::npos)
             break;
-        lppField = va_arg(args, LPTSTR*);
-        *lppField = _tcsdup(ptr);
+        auto &field = va_arg(args, wstring&);
+        field = head.substr(index,pos);
+        index = pos + 1;
     }
 
     va_end(args);
-    return ptr;
+    return index;
 }
 
-LPTSTR Parser::parseAttributeBody(LPCTSTR lpszBody, int* nCases) {
+LPTSTR Parser::parseAttributeBody(const wstring &body, size_t pos, int* nCases) {
     // Разбор списка значений
-    size_t len = _tcslen(lpszBody);
-    LPCTSTR ptr = lpszBody;
+    size_t len = body.length() - pos;
+    LPCTSTR ptr = body.c_str() + pos;
     LPTSTR dst = (LPTSTR)calloc(len+2, sizeof(TCHAR));
     int count = 0;
     size_t index = 0;
@@ -57,15 +59,15 @@ LPTSTR Parser::parseAttributeBody(LPCTSTR lpszBody, int* nCases) {
     return dst;
 }
 
-void Parser::parseAttributeRecord(LPTSTR lpszRecord, attribute_t* attr) {
+void Parser::parseAttributeRecord(const wstring &record, attribute_t* attr) {
     LPTSTR ptr;
 
     // Заполнение первых трех полей
-    ptr = parseAttributeHead(lpszRecord, 3,
-        &attr->lpszName, &attr->lpszTitle, &attr->lpszQuery);
+    auto pos = parseAttributeHead(record, 3,
+        ref(attr->name), ref(attr->title), ref(attr->query));
 
     // Разбор списка значений
-    attr->lpszCases = parseAttributeBody(ptr, &attr->nCases);
+    attr->lpszCases = parseAttributeBody(record, pos, &attr->nCases);
 }
 
 #define PARSE_STATEMENT \
@@ -183,12 +185,6 @@ void Parser::free() {
     for (int i=0; i<nAttrs; i++) {
         attr = getAttribute(i);
         if (attr != NULL) {
-            if (attr->lpszName != NULL)
-                ::free(attr->lpszName);
-            if (attr->lpszTitle != NULL)
-                ::free(attr->lpszTitle);
-            if (attr->lpszQuery != NULL)
-                ::free(attr->lpszQuery);
             if (attr->lpszCases != NULL)
                 ::free(attr->lpszCases);
         }

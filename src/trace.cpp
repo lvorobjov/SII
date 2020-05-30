@@ -69,7 +69,7 @@ static void print_recursive_tree(tree_node_t* n) {
         _tprintf(_T("{\\hspace{0pt}%.12ls...} "),
             attribute_get_case(n->col, n->dwClass));
     } else if (n->dwType == tree_node_type::DECISION) {
-        _tprintf(_T("[.{%ls} "), n->col->lpszTitle);
+        _tprintf(_T("[.{%ls} "), n->col->title.c_str());
         for (int i=0; i<n->col->nCases; i++) {
             if (n->nodes[i].dwType != 0) {
                 _tprintf(_T("\\edge node[auto]{%.5ls}; "),
@@ -127,11 +127,11 @@ void print_rules(list_t* r) {
             stmt = &rule -> premises[i];
             _tprintf(_T("\t\\bf %ls \\> \\tabfill{%ls = %ls} \\\\\n"),
                 (i == 0) ? _T("ЕСЛИ") : _T("И"),
-                stmt->attr->lpszTitle,
+                stmt->attr->title.c_str(),
                 attribute_get_case(stmt->attr, stmt->dwValue));
         }
         _tprintf(_T("\t\\bf %ls \\> \\tabfill{%ls = %ls}\n"),
-            _T("ТО"), rule->conclusion.attr->lpszTitle,
+            _T("ТО"), rule->conclusion.attr->title.c_str(),
             attribute_get_case(rule->conclusion.attr, rule->conclusion.dwValue));
         _tprintf(_T("\t\\end{tabbing}\n"));
         r = r -> next;
@@ -166,7 +166,7 @@ void print_rules_prolog(list_t* r) {
         for (int i=0; i<rule->nPremises; i++) {
             stmt = &rule -> premises[i];
             _tprintf(_T("\n\t\tpriznak(\"%ls = %ls\"),"),
-                stmt->attr->lpszTitle,
+                stmt->attr->title.c_str(),
                 attribute_get_case(stmt->attr, stmt->dwValue));
         }
         _tprintf(_T("!.\n"));

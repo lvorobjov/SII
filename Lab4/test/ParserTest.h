@@ -76,9 +76,9 @@ protected:
 	void addRule(rule_t* rule) {
         list_add(rules, rule);
     }
-	attribute_t* getAttributeByName(LPCTSTR lpszName) const {
+    attribute_t* getAttributeByName(const wstring &name) const {
 		for (int i=0; i<nAttrs; i++) {
-			if (_tcscmp(attrs[i].lpszName, lpszName) == 0) {
+            if (attrs[i].name == name) {
 				return &attrs[i];
 			}
 		}
@@ -89,11 +89,11 @@ public:
 	void setUp() {
 		attrs = (attribute_t*)calloc(nAttrs, sizeof(attribute_t));
 		for (int i=0; i<nAttrs; i++) {
-			attrs[i].lpszName = _tcsdup(attrCases[i].szFields[0]);
+			attrs[i].name.c_str() = _tcsdup(attrCases[i].szFields[0]);
 			if (attrCases[i].szFields[1] != nullptr)
 				attrs[i].title.c_str() = _tcsdup(attrCases[i].szFields[1]);
 			if (attrCases[i].szFields[2] != nullptr)
-				attrs[i].lpszQuery = _tcsdup(attrCases[i].szFields[2]);
+				attrs[i].query.c_str() = _tcsdup(attrCases[i].szFields[2]);
 			attrs[i].lpszCases = (LPTSTR)calloc(attrCases[i].nCasesLen,sizeof(TCHAR));
 			memcpy(attrs[i].lpszCases, attrCases[i].szCases, attrCases[i].nCasesLen * sizeof(TCHAR));
 			attrs[i].nCases = attrCases[i].nCases;
@@ -167,9 +167,9 @@ public:
 			_tprintf(_T("Parsing: %s\n"), attrCases[i].szRecord);
 			_tcscpy(lpszBuffer, attrCases[i].szRecord);
 			parseAttributeRecord(lpszBuffer, &attr);
-			TS_ASSERT_SAME_DATA_NOT_NULL_AND_FREE(attr.lpszName, attrCases[i].szFields[0]);
+			TS_ASSERT_SAME_DATA_NOT_NULL_AND_FREE(attr.name.c_str(), attrCases[i].szFields[0]);
 			TS_ASSERT_SAME_DATA_OR_NULL_AND_FREE(attr.title.c_str(), attrCases[i].szFields[1]);
-			TS_ASSERT_SAME_DATA_OR_NULL_AND_FREE(attr.lpszQuery, attrCases[i].szFields[2]);
+			TS_ASSERT_SAME_DATA_OR_NULL_AND_FREE(attr.query.c_str(), attrCases[i].szFields[2]);
 			TS_ASSERT_DIFFERS(attr.lpszCases, nullptr);
 			if (attr.lpszCases != nullptr) {
 				TS_ASSERT_SAME_DATA(attr.lpszCases, attrCases[i].szCases, attrCases[i].nCasesLen * sizeof(TCHAR));
@@ -254,9 +254,9 @@ public:
 		::free(lpszData);
 
 		for (int i=0; i<nAttrs; i++) {
-			TS_ASSERT_SAME_DATA_NOT_NULL(attrs[i].lpszName, attrCases[i].szFields[0]);
+			TS_ASSERT_SAME_DATA_NOT_NULL(attrs[i].name.c_str(), attrCases[i].szFields[0]);
 			TS_ASSERT_SAME_DATA_OR_NULL(attrs[i].title.c_str(), attrCases[i].szFields[1]);
-			TS_ASSERT_SAME_DATA_OR_NULL(attrs[i].lpszQuery, attrCases[i].szFields[2]);
+			TS_ASSERT_SAME_DATA_OR_NULL(attrs[i].query.c_str(), attrCases[i].szFields[2]);
 			TS_ASSERT_DIFFERS(attrs[i].lpszCases, nullptr);
 			if (attrs[i].lpszCases != nullptr) {
 				TS_ASSERT_SAME_DATA(attrs[i].lpszCases, attrCases[i].szCases, attrCases[i].nCasesLen * sizeof(TCHAR));

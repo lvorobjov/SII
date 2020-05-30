@@ -63,9 +63,9 @@ void table_free(table_t* t) {
     if (t == NULL)
         return;
     for (int i=0; i < t->nCols; i++) {
-        free(t->cols[i].lpszName);
-        free(t->cols[i].lpszTitle);
-        free(t->cols[i].lpszQuery);
+        free(t->cols[i].name.c_str());
+        free(t->cols[i].title.c_str());
+        free(t->cols[i].query.c_str());
         free(t->cols[i].lpszCases);
     }
 	free(t->rows);
@@ -323,9 +323,9 @@ void print_rules_db(table_t* t, list_t* r) {
     // Printing attribute list
     for (int i=0; i<nAttrs; i++) {
         _tprintf(_T("%ls:%ls:%ls:"),
-            t->cols[i].lpszName,
-            t->cols[i].lpszTitle,
-            t->cols[i].lpszQuery);
+            t->cols[i].name.c_str(),
+            t->cols[i].title.c_str(),
+            t->cols[i].query.c_str());
         nCases = t->cols[i].nCases;
         pszCase = attribute_first_case(&t->cols[i]);
         for (int j=0; pszCase != NULL; j++) {
@@ -338,11 +338,11 @@ void print_rules_db(table_t* t, list_t* r) {
     for (int i=0; i<nRules && r != NULL; i++) {
         rule = reinterpret_cast<rule_t*>(r->data);
         _tprintf(_T("%ls=%d:"),
-            rule->conclusion.attr->lpszName,
+            rule->conclusion.attr->name.c_str(),
             rule->conclusion.dwValue);
         for (int j=0; j<rule->nPremises; j++) {
             _tprintf(_T("%ls=%d%ls"),
-                rule->premises[j].attr->lpszName,
+                rule->premises[j].attr->name.c_str(),
                 rule->premises[j].dwValue,
                 (j < rule->nPremises-1)? _T(";") : _T(".\n"));
         }

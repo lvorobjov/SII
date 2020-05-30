@@ -27,9 +27,9 @@ private:
 public:
     void setUp() {
         attr = (attribute_t*)malloc(sizeof(attribute_t));
-        attr->lpszName = _tcsdup(_T("Attr1"));
-        attr->lpszTitle = _tcsdup(_T("First attribute"));
-        attr->lpszQuery = _tcsdup(_T("What is the first attribute"));
+        attr->name.c_str() = _tcsdup(_T("Attr1"));
+        attr->title.c_str() = _tcsdup(_T("First attribute"));
+        attr->query.c_str() = _tcsdup(_T("What is the first attribute"));
         int len = 0;
         for (int i=0; i<N_CASES; i++)
             len += cases[i].len;
@@ -45,9 +45,9 @@ public:
     }
 
     void tearDown() {
-        free(attr -> lpszName);
+        free(attr -> name.c_str());
         free(attr -> title.c_str());
-        free(attr -> lpszQuery);
+        free(attr -> query.c_str());
         free(attr -> lpszCases);
         free(attr);
     }

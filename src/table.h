@@ -4,6 +4,8 @@
 #define TABLE_H
 
 #include <logic.h>
+#include <string>
+using std::wstring;
 
 #define N_ATTRS 4
 
@@ -23,7 +25,7 @@ typedef struct _table_t {
 } table_t;
 
 table_t *table_new(int nRows, int nCols);
-table_t *table_load(LPCTSTR lpszFileData);
+table_t *table_load(const wstring &fileData);
 void table_free(table_t* t);
 
 typedef enum {

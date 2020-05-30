@@ -350,8 +350,8 @@ void print_rules_db(table_t* t, list_t* r) {
     }
 }
 
-table_t *table_load(LPCTSTR lpszFileData) {
-    LPTSTR lpszFileDup = _tcsdup(lpszFileData);
+table_t *table_load(const wstring &fileData) {
+    LPTSTR lpszFileDup = _tcsdup(fileData.c_str());
     LPTSTR lpszLine;
     int nCols;
     int nRows;

@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     setlocale(LC_ALL, "ru_RU.utf8");
     wstring fileData = read_file_multi_byte(argv[1]);
 	table_t *table;
-    if (!(table = table_load(fileData.c_str()))) {
+    if (!(table = table_load(fileData))) {
 		fprintf(stderr, "%s not exists", argv[1]);
 		return EXIT_FAILURE;
     }

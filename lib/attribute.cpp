@@ -53,7 +53,7 @@ static LPTSTR attribute_parse_body(const wstring &body, size_t pos, int* nCases)
             break;
         len = _tcscspn(ptr, _T(";."));
         _tcsncpy(dst+index, ptr, len);
-        ptr += len;
+        ptr += len + 1;
         index += len + 1;
         count ++;
     }

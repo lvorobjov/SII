@@ -36,53 +36,23 @@ LPTSTR Parser::parseAttributeHead(LPTSTR lpszHead, int nFields, ...) {
     return ptr;
 }
 
-#define PARSE_ATTRIBUTE_CASES \
-    ".intel_syntax noprefix\n\t" \
-    "cld\n\t"	\
-    "xor %0,%0\n\t"	\
-    "1:\n\t"	\
-    "xchg " RDI "," RSI "\n\t"	\
-    "mov ax, ' '\n\t"	\
-    "repe " SCAS_TCHAR	\
-    "xchg " RSI "," RDI "\n\t"	\
-    DEC_TCHAR(RSI)	\
-    "inc " RCX "\n\t"	\
-    "2:\n\t"	\
-    LODS_TCHAR	\
-    "cmp " AX_TCHAR ", ';'\n\t"	\
-    "je 3f\n\t"	\
-    "cmp " AX_TCHAR ", '.'\n\t"	\
-    "je 4f\n\t"	\
-    "cmp " AX_TCHAR ", 0\n\t"	\
-    "je 4f\n\t"	\
-    STOS_TCHAR	\
-    "loop 2b\n\t"	\
-    "jmp 4f\n\t"	\
-    "3:\n\t"	\
-    "xor ax, ax\n\t"	\
-    STOS_TCHAR	\
-    "inc %0\n\t"	\
-    "loop 1b\n\t"	\
-    "jmp 5f\n\t"	\
-    "4:\n\t"	\
-    "inc %0\n\t"	\
-    "xor ax, ax\n\t"	\
-    STOS_TCHAR	\
-    "5:\n\t"	\
-    STOS_TCHAR
-
 LPTSTR Parser::parseAttributeBody(LPCTSTR lpszBody, int* nCases) {
     // Разбор списка значений
-    int len = _tcslen(lpszBody);
-    int count;
+    size_t len = _tcslen(lpszBody);
     LPCTSTR ptr = lpszBody;
-    volatile LPTSTR dst = (LPTSTR)calloc(len+2, sizeof(TCHAR));
-    __asm__ __volatile__ (
-        PARSE_ATTRIBUTE_CASES
-        : "=b" (count)
-        : "S" (ptr), "D" (dst), "c" (len)
-        : RAX, "cc", "memory"
-    );
+    LPTSTR dst = (LPTSTR)calloc(len+2, sizeof(TCHAR));
+    int count = 0;
+    size_t index = 0;
+    while (ptr) {
+        ptr += _tcsspn(ptr, _T(" \t"));
+        if (! *ptr)
+            break;
+        len = _tcscspn(ptr, _T(";."));
+        _tcsncpy(dst+index, ptr, len);
+        ptr += len;
+        index += len + 1;
+        count ++;
+    }
     *nCases = count;
     return dst;
 }

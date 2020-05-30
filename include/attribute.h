@@ -30,6 +30,11 @@ typedef wchar_t TCHAR;
 #define _tcschr wcschr
 #define _tcstol wcstol
 #define _tcsdup wcsdup
+#define _tcsspn wcsspn
+#define _tcscspn wcscspn
+#define _tcscpy wcscpy
+#define _tcsncpy wcsncpy
+#define _tcspbrk wcspbrk
 #else
 typedef char TCHAR;
 #define _tcslen strlen
@@ -41,6 +46,11 @@ typedef char TCHAR;
 #define _tcschr strchr
 #define _tcstol strtol
 #define _tcsdup strdup
+#define _tcsspn strspn
+#define _tcscspn strcspn
+#define _tcscpy strcpy
+#define _tcsncpy strncpy
+#define _tcspbrk strpbrk
 #endif
 #include <cstdint>
 typedef const TCHAR *LPCTSTR;

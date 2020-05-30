@@ -4,13 +4,11 @@
 #define TABLE_H
 
 #include <logic.h>
-#include <string>
-using std::wstring;
 
 #define N_ATTRS 4
 
 typedef struct _roadsign_t {
-	LPTSTR lpszTitle;
+    wstring title;
 	DWORD dwClass;
 	BYTE bAttrs[N_ATTRS];
 } roadsign_t;

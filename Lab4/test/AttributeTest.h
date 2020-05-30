@@ -46,7 +46,7 @@ public:
 
     void tearDown() {
         free(attr -> lpszName);
-        free(attr -> lpszTitle);
+        free(attr -> title.c_str());
         free(attr -> lpszQuery);
         free(attr -> lpszCases);
         free(attr);

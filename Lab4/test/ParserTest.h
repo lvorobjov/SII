@@ -91,7 +91,7 @@ public:
 		for (int i=0; i<nAttrs; i++) {
 			attrs[i].lpszName = _tcsdup(attrCases[i].szFields[0]);
 			if (attrCases[i].szFields[1] != nullptr)
-				attrs[i].lpszTitle = _tcsdup(attrCases[i].szFields[1]);
+				attrs[i].title.c_str() = _tcsdup(attrCases[i].szFields[1]);
 			if (attrCases[i].szFields[2] != nullptr)
 				attrs[i].lpszQuery = _tcsdup(attrCases[i].szFields[2]);
 			attrs[i].lpszCases = (LPTSTR)calloc(attrCases[i].nCasesLen,sizeof(TCHAR));
@@ -168,7 +168,7 @@ public:
 			_tcscpy(lpszBuffer, attrCases[i].szRecord);
 			parseAttributeRecord(lpszBuffer, &attr);
 			TS_ASSERT_SAME_DATA_NOT_NULL_AND_FREE(attr.lpszName, attrCases[i].szFields[0]);
-			TS_ASSERT_SAME_DATA_OR_NULL_AND_FREE(attr.lpszTitle, attrCases[i].szFields[1]);
+			TS_ASSERT_SAME_DATA_OR_NULL_AND_FREE(attr.title.c_str(), attrCases[i].szFields[1]);
 			TS_ASSERT_SAME_DATA_OR_NULL_AND_FREE(attr.lpszQuery, attrCases[i].szFields[2]);
 			TS_ASSERT_DIFFERS(attr.lpszCases, nullptr);
 			if (attr.lpszCases != nullptr) {
@@ -255,7 +255,7 @@ public:
 
 		for (int i=0; i<nAttrs; i++) {
 			TS_ASSERT_SAME_DATA_NOT_NULL(attrs[i].lpszName, attrCases[i].szFields[0]);
-			TS_ASSERT_SAME_DATA_OR_NULL(attrs[i].lpszTitle, attrCases[i].szFields[1]);
+			TS_ASSERT_SAME_DATA_OR_NULL(attrs[i].title.c_str(), attrCases[i].szFields[1]);
 			TS_ASSERT_SAME_DATA_OR_NULL(attrs[i].lpszQuery, attrCases[i].szFields[2]);
 			TS_ASSERT_DIFFERS(attrs[i].lpszCases, nullptr);
 			if (attrs[i].lpszCases != nullptr) {

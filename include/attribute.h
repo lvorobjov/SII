@@ -12,6 +12,9 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
+#include <string>
+using std::wstring;
+
 #ifdef _WIN32
 #include <windef.h>
 #include <tchar.h>

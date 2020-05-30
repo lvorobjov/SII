@@ -7,6 +7,9 @@
 #include "trace.h"
 #include "parser.h"
 
+#include <sstream>
+using namespace std;
+
 static double table_entropy(table_t* t, int i0, int n);
 static double table_entropy_separate(table_t* t, int i0, int n, int xCol);
 static int table_select_criteria(table_t* t, int i0, int n);
@@ -64,9 +67,6 @@ void table_free(table_t* t) {
         free(t->cols[i].lpszTitle);
         free(t->cols[i].lpszQuery);
         free(t->cols[i].lpszCases);
-    }
-    for (int i=0; i < t->nRows; i++) {
-        free(t->rows[i].lpszTitle);
     }
 	free(t->rows);
 	free(t->cols);
@@ -351,31 +351,29 @@ void print_rules_db(table_t* t, list_t* r) {
 }
 
 table_t *table_load(const wstring &fileData) {
-    LPTSTR lpszFileDup = _tcsdup(fileData.c_str());
-    LPTSTR lpszLine;
+    wistringstream ss(fileData);
+    wstring line;
     int nCols;
     int nRows;
-    LPTSTR lineptr;
-    lpszLine = _tcstok(lpszFileDup, _T("\r\n"), &lineptr);
-    _stscanf(lpszLine, _T("%d %d"), &nCols, &nRows);
+    getline(ss, line);
+    _stscanf(line.c_str(), _T("%d %d"), &nCols, &nRows);
     table_t* t = table_new(nRows, nCols);
     for (int i=0; i<nCols; i++) {
-        lpszLine = _tcstok(lpszFileDup, _T("\r\n"), &lineptr);
-        Parser::parseAttributeRecord(lpszLine, &t->cols[i]);
+        getline(ss, line);
+        LPTSTR lineDup = _tcsdup(line.c_str());
+        Parser::parseAttributeRecord(lineDup, &t->cols[i]);
+        free(lineDup);
     }
-    LPTSTR ptr;
     LPTSTR saveptr;
     for (int i=0; i<nRows; i++) {
-        lpszLine = _tcstok(lpszFileDup, _T("\r\n"), &lineptr);
-        ptr = _tcschr(lpszLine, (int)_T('\t'));
-        *ptr++ = _T('\0');
-        t->rows[i].lpszTitle = _tcsdup(lpszLine);
-        t->rows[i].dwClass = _tcstol(ptr, &saveptr, 10);
+        getline(ss, line);
+        auto pos = line.find(_T('\t'));
+        t->rows[i].title = line.substr(0, pos);
+        t->rows[i].dwClass = _tcstol(line.c_str()+pos+1, &saveptr, 10);
         for (int j=0; j<nCols-1; j++) {
-            ptr = ++saveptr;
+            auto ptr = ++saveptr;
             t->rows[i].bAttrs[j] = _tcstol(ptr, &saveptr, 10);
         }
     }
-    free(lpszFileDup);
     return t;
 }

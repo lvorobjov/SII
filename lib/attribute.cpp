@@ -26,7 +26,7 @@ static wstring attribute_parse_field(const wstring &head, size_t &index) {
     auto pos = head.find(_T(":"), index);
     if (pos == wstring::npos)
         throw std::out_of_range(":");
-    wstring res = head.substr(index,pos);
+    wstring res = head.substr(index,pos-index);
     index = pos + 1;
     return res;
 }

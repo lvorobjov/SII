@@ -17,36 +17,19 @@
 
 #include <asmdef.h>
 
-#define PARSE_ATTRIBUTE_HEAD \
-    ".intel_syntax noprefix\n\t" \
-    "cld\n\t"       \
-    JRCXZ " 1f\n\t" \
-    "mov " AX_TCHAR ", ':'\n\t" \
-    "repne " SCAS_TCHAR \
-    "jne 1f\n\t" \
-    "mov " TCHAR_PTR(RDI "-" TCHAR_SIZE) ", 0\n\t" \
-    "1:\n\t"
-
 LPTSTR Parser::parseAttributeHead(LPTSTR lpszHead, int nFields, ...) {
     va_list args{};
     va_start(args, nFields);
     LPTSTR ptr = lpszHead;
-    int len = _tcslen(ptr);
-    LPTSTR saveptr = ptr;
+    LPTSTR saveptr = NULL;
     LPTSTR* lppField;
 
     for (int i=0; i<nFields; i++) {
-        __asm__ __volatile__ (
-            PARSE_ATTRIBUTE_HEAD
-            : "+D" (saveptr), "+c" (len)
-            :
-            : RAX, "cc", "memory"
-        );
-        if (saveptr[0] == _T('\0'))
+        ptr = _tcstok(lpszHead, _T(":"), &saveptr);
+        if (! ptr)
             break;
         lppField = va_arg(args, LPTSTR*);
-        *lppField = (ptr[0] != _T('\0'))? _tcsdup(ptr) : NULL;
-        ptr = saveptr;
+        *lppField = _tcsdup(ptr);
     }
 
     va_end(args);

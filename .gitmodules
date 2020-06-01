@@ -4,3 +4,6 @@
 [submodule "Lab4/src"]
 	path = Lab4/src
 	url = git@github.com:lvorobjov/SII-Lab4.git
+[submodule "c45"]
+	path = c45
+	url = git@github.com:lvorobjov/c45.git

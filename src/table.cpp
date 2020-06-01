@@ -8,7 +8,9 @@
 #include "parser.h"
 
 #include <sstream>
+#include <boost/algorithm/string.hpp>
 using namespace std;
+using boost::trim_right;
 
 static double table_entropy(table_t* t, int i0, int n);
 static double table_entropy_separate(table_t* t, int i0, int n, int xCol);
@@ -357,11 +359,13 @@ table_t *table_load(const wstring &fileData) {
     table_t* t = table_new(nRows, nCols);
     for (int i=0; i<nCols; i++) {
         getline(ss, line);
+        trim_right(line);
         attribute_parse(line, &t->cols[i]);
     }
     LPTSTR saveptr;
     for (int i=0; i<nRows; i++) {
         getline(ss, line);
+        trim_right(line);
         auto pos = line.find(_T('\t'));
         t->rows[i].title = line.substr(0, pos);
         t->rows[i].dwClass = _tcstol(line.c_str()+pos+1, &saveptr, 10);

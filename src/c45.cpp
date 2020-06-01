@@ -45,9 +45,9 @@ int main(int argc, char *argv[]) {
 #endif // _VERBOSE
     list_t* rule_list = table_to_rules(table);
 #ifdef _VERBOSE
+    fflush(stdout);
 	dup2(stdout_copy, STDOUT_FILENO);
-	close(stdout_copy);
-	fflush(stdout);
+    close(stdout_copy);
 #endif
 	print_rules_db(table, rule_list);
 	rule_list_free(rule_list);

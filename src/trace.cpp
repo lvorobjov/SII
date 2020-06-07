@@ -90,7 +90,7 @@ static void print_recursive_tree(tree_node_t* n) {
 }
 
 void print_tree(tree_node_t* n) {
-    stack_push(stack, tree_context_new(_T("Группа знака?"), n));
+    stack_push(stack, tree_context_new(_T("Название паттерна?"), n));
     tree_context_t* tree;
     int i = 1;
     while (stack != NULL) {

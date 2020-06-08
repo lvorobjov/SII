@@ -7,3 +7,6 @@
 [submodule "c45"]
 	path = c45
 	url = git@github.com:lvorobjov/c45.git
+[submodule "cmake/Modules/adoc"]
+	path = cmake/Modules/adoc
+	url = git@github.com:lvorobjov/AsciiDoc-CMake.git

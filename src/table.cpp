@@ -33,9 +33,9 @@ static void table_recursive_c45(table_t* t, int i0, int n, tree_node_t* node);
   #define END_TRACE_GAINS(nAttrs,xCol) \
     print_gains(gains,nAttrs,xCol);
   #define TRACE_BEGIN(i0,n) \
-    _tprintf(_T("\nАнализируется таблица от %d до %d.\n"), i0+1, i0+n);
+    _tprintf(_T("\nАнализируется таблица с %d по %d строку.\n"), i0+1, i0+n);
   #define TRACE_END(i0,n) \
-    _tprintf(_T("\nЗавершен анализ таблицы от %d до %d.\n"), i0+1, i0+n);
+    _tprintf(_T("\nЗавершен анализ строк таблицы с %d по %d.\n"), i0+1, i0+n);
   #define TRACE_SOLVE(i,c,g) \
     _tprintf(_T("\nНайдено правило: $C_{%d} = %d \\Longrightarrow G = %d$.\n"),i,c,g);
 #else

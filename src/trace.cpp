@@ -72,7 +72,7 @@ static void print_recursive_tree(tree_node_t* n) {
         _tprintf(_T("[.{%ls} "), n->col->title.c_str());
         for (int i=0; i<n->col->nCases; i++) {
             if (n->nodes[i].dwType != 0) {
-                _tprintf(_T("\\edge node[auto]{%.5ls}; "),
+                _tprintf(_T("\\edge node[auto]{%ls}; "),
                     attribute_get_case(n->col, i));
                 if (count_solves(&n->nodes[i]) <= 3) {
                     print_recursive_tree(&n->nodes[i]);

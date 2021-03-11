@@ -25,15 +25,13 @@
 
 Для установки последней версии Boost в Ubuntu / Linux Mint нужно выполнить следующие команды:
 
-```
+[listing]
 sudo apt install -y autotools-dev libicu-dev libbz2-dev
 wget -O boost_1_75_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.75.0/boost_1_75_0.tar.gz/download && tar xzvf boost_1_75_0.tar.gz
 cd boost_1_75_0 && ./bootstrap.sh --prefix=/usr/ && ./b2 && sudo ./b2 install
-```
 
 В Arch Linux / Manjaro:
 
-```
+[listing]
 sudo pacman -Syu boost
-```
 

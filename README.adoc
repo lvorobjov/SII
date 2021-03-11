@@ -17,13 +17,23 @@
 
 Проект зависит от слудующих библиотек:
 
-- Boost.Iostreams 1.65.1
-- Boost.System 1.65.1
+- Boost.Iostreams версии > 1.65.1
+- Boost.System версии > 1.65.1
 - WinLamb
 
 Для установки Boost под Windows необходимо скачать архив с исходным кодом, распаковать его и запустить компиляцию, слудуя https://gist.github.com/zrsmithson/0b72e0cb58d0cb946fc48b5c88511da8[инструкции для MinGW].
 
-Для установки Boost под Linux нужна всего лишь одна команда
+Для установки последней версии Boost в Ubuntu / Linux Mint нужно выполнить следующие команды:
+
 ```
-sudo apt install libboost-all-dev
+sudo apt install -y autotools-dev libicu-dev libbz2-dev
+wget -O boost_1_75_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.75.0/boost_1_75_0.tar.gz/download && tar xzvf boost_1_75_0.tar.gz
+cd boost_1_75_0 && ./bootstrap.sh --prefix=/usr/ && ./b2 && sudo ./b2 install
 ```
+
+В Arch Linux / Manjaro:
+
+```
+sudo pacman -Syu boost
+```
+

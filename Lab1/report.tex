@@ -1,0 +1,158 @@
+\documentclass[%
+substylefile = laboratory.rtx, % тип документа
+natbib,         % использовать пакет natbib для "сжатия" цитирований
+subf,           % использовать пакет subcaption для вложенной нумерации рисунков
+href,           % использовать пакет hyperref для создания гиперссылок
+colorlinks=true % цветные гиперссылки
+%,fixint=false  % отключить прямые знаки интегралов
+,times          % шрифт Times как основной
+%,mtpro         % шрифт Times для формул
+]{gost732-b}
+
+
+\usepackage[
+  a4paper, mag=1000,
+  left=3.0cm, right=1cm, top=2cm, bottom=2.0cm, headsep=0.7cm, footskip=1cm
+]{geometry}
+\usepackage[X2, T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[english,russian]{babel}
+% Многостраничные таблицы
+\usepackage{tabularx,longtable,tabu,multirow}
+\ifpdf\usepackage{epstopdf}\fi
+
+% Настройка таблиц
+\newcolumntype{C}{>{\centering\arraybackslash}X }
+
+% Альбомная ориентация страниц
+\usepackage{lscape}
+
+% Плавающие рисунки "в оборку".
+\usepackage{wrapfig}
+
+% Пакет для вывода текста в несколько колонок
+\usepackage{multicol}
+
+% Пакет для листингов прогармм
+\usepackage{minted}
+\setminted{numbers=left, fontsize=\small, breaklines, autogobble, baselinestretch=1.1, tabsize=4, outencoding=utf8}
+
+% Пакет для изменения межстрочного интервала
+%\usepackage{setspace}
+
+% Нумерация списков цифрами, потом буквами
+% \renewcommand\theenumi  {\arabic{enumi}}
+% \renewcommand\theenumii {\asbuk{enumii}}
+
+% Номера страниц сверху и справа
+\pagestyle{headright}
+\chapterpagestyle{headright}
+
+% Точка с запятой в качестве разделителя между номерами цитирований
+%\setcitestyle{semicolon}
+
+% Использовать полужирное начертание для векторов
+%\let\vec=\mathbf
+
+% Включать подсекции в оглавление
+\setcounter{tocdepth}{2}
+
+\graphicspath{{fig/}}
+
+% Библитека для рисования фигур
+\usepackage{tikz}
+
+\begin{document}
+
+\clubpenalty=10000 
+\widowpenalty=10000
+
+% Переопределение стандартных заголовков
+%\def\contentsname{Содержание}
+\def\conclusionname{Выводы}
+%\def\bibname{Литература}
+
+\institution{Государственное образовательное учреждение\\
+высшего профессионального образования\\
+<<Донецкий национальный технический университет>>}
+
+% Кафедра
+\chair{Кафедра программной инженерии}
+
+% Факультет
+\department{Факультет компьютерных наук и технологий}
+
+% Имя лица, допускающего к защите (зав. кафедрой)
+\apname{Федяев~О.~И.}
+
+\title{Отчет}
+
+\subtitle{по лабораторной работе №~1\\ по курсу <<Системы искусственного интеллекта>>}
+
+\topic{Инженерия извлечения знаний при создании базы знаний интеллектуальной системы}
+
+\keywords{Ключевые слова}
+
+% Автор
+\author{Воробьёв~Л.~О.} % ФИО
+\group{ИПО-14б} % Группа
+\coursenum{6.050103} % Номер специальности
+\course{Программная инженерия} % Название специальности
+
+% Научный руководитель
+\sa      {Федяев~О.~И.}
+\sastatus{доц.~каф.~ПИ}
+
+% Город и год
+\city{Донецк}
+\date{\number\year}
+
+\maketitle
+
+%%
+%% Titlepage in English
+%%
+%
+%\institution{Doneck national texnecial university}
+%
+%% Approved by
+%\apname{Docent A.\,I.~Andruxin}
+%
+%\title{Bachelor's Thesis}
+%
+%% Topic
+%\topic{Develop SMDB for automatize manade autoschools}
+%
+%% Author
+%\author{Author's Name} % Full Name
+%\course{Program ingeenering} % Название специальности
+%
+%\group{} % Study Group
+%
+%% Scientific Advisor
+%\sa       {I.\,I.~Ivanov}
+%\sastatus {Professor}
+%
+%% Reviewer
+%\rev      {P.\,P.~Petrov}
+%\revstatus{Associate Professor}
+%
+%% City & Year
+%\city{Saint Petersburg}
+%\date{\number\year}
+%
+%\maketitle[en]
+
+% Содержание
+% \tableofcontents
+
+% Глава 1
+\input{1}
+% Глава 2
+% \input{2}
+
+% Список литературы
+% \bibliography{report}
+% \bibliographystyle{ugost2003}
+
+\end{document}

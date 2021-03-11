@@ -19,7 +19,7 @@
 
 - Boost.Iostreams версии > 1.65.1
 - Boost.System версии > 1.65.1
-- WinLamb
+- https://github.com/rodrigocfd/winlamb[WinLamb]
 
 Для установки Boost под Windows необходимо скачать архив с исходным кодом, распаковать его и запустить компиляцию, слудуя https://gist.github.com/zrsmithson/0b72e0cb58d0cb946fc48b5c88511da8[инструкции для MinGW].
 

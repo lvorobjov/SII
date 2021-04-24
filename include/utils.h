@@ -7,6 +7,8 @@
  * @Last modified time: 11.04.2018
  * @License: MIT
  * @Copyright: Copyright (c) 2018 Lev Vorobjev
+ * This is free software that provided "as-is" and without 
+ * any warranty to the extent permitted by applicable law.
  */
 
 #ifndef UTILS_H

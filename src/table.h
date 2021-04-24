@@ -1,4 +1,9 @@
-// table.h
+/*
+ * Copyright (c) 2018, 2021 Лев Воробьёв
+ * 
+ * This is free software that provided "as-is" and without 
+ * any warranty to the extent permitted by applicable law.
+ */
 
 #ifndef TABLE_H
 #define TABLE_H

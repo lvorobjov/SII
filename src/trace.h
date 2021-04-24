@@ -7,6 +7,8 @@
  * @Last modified time: 08.04.2018
  * @License: MIT
  * @Copyright: Copyright (c) 2017 Lev Vorobjev
+ * This is free software that provided "as-is" and without 
+ * any warranty to the extent permitted by applicable law.
  */
 
 #ifndef TRACE_H
